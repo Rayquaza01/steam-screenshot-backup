@@ -140,6 +140,7 @@ def main():
     for folder in os.scandir(SCREENSHOT_SRC):
         if os.path.isdir(folder):
             bn = os.path.basename(folder)
+            # convert appid (basename of screenshot folder) to game name
             game_name = get_name(bn)
 
             for screenshot in os.scandir(os.path.join(folder, "screenshots")):
@@ -147,9 +148,11 @@ def main():
                 if not os.path.isdir(folder_dest):
                     os.mkdir(folder_dest)
 
+                # only handle screenshots, skip thumbnails directory
                 if os.path.isfile(screenshot):
                     screenshot_fn = os.path.basename(screenshot)
 
+                    # skip copying screenshot if it already exists
                     screenshot_dest = os.path.join(folder_dest, screenshot_fn)
                     if not os.path.isfile(screenshot_dest):
                         count += 1
