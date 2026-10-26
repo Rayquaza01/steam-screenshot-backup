@@ -56,6 +56,8 @@ def get_name(appid):
         return body[appid]["data"]["name"]
 
     # step 5: fallback to id
+    print(f"{appid} → unknown. please set manually")
+    cache_data[appid] = appid
     return appid
 
 
