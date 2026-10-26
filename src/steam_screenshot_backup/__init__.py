@@ -62,14 +62,15 @@ def get_name(appid):
 def read_cache():
     if os.path.isfile(CACHE):
         with open(CACHE, "r") as f:
-            cd = json.load(f)
-            for k, v in cd.items():
-                cache_data[k] = v
+            for line in f.readlines():
+                k, v = line.split("\t")
+                cache_data[k] = v.rstrip()
 
 
 def write_cache():
     with open(CACHE, "w") as f:
-        f.write(json.dumps(cache_data))
+        for k, v in cache_data.items():
+            f.write(f"{k}\t{v}" + os.linesep)
 
 
 # https://gaming.stackexchange.com/a/386883
