@@ -2,7 +2,7 @@
 
 Backup your Steam screenshots to a separate location, and convert the appids into a readable name
 
-Steam stores its screenshots in `~/.local/share/Steam/userdata/<STEAM USERID>/760/remote", with each subfolder from there corresponding to an appid for a game. While you *could* copy this folder directly, it is difficult to tell what folder corresponds to which game (unless you memorize each appid). This tool maps each appid to the name of the game before copying, making it more convenient to browse your screenshots.
+Steam stores its screenshots in `~/.local/share/Steam/userdata/<STEAM USERID>/760/remote`, with each subfolder from there corresponding to an appid for a game. While you *could* copy this folder directly, it is difficult to tell what folder corresponds to which game (unless you memorize each appid). This tool maps each appid to the name of the game before copying, making it more convenient to browse your screenshots.
 
 # Installation
 
