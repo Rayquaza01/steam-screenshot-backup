@@ -7,16 +7,46 @@ import struct
 import vdf
 import urllib.request
 import shutil
+import argparse
+import tomllib
 
-STEAM_USERDATA = os.path.expandvars("$HOME/.local/share/Steam/userdata/$STEAM_USERID")
+ap = argparse.ArgumentParser()
+ap.add_argument("--config", nargs="?", help="The location of the config file", default="$HOME/.config/steam_screenshot_backup/config.toml")
+opts = ap.parse_args()
+
+CONFIG_FILE = os.path.expandvars(opts.config)
+
+CONFIG_STEAM_USERID = ""
+CONFIG_DEST = "$HOME/Pictures/Steam"
+CONFIG_CACHE = "$HOME/.config/steam_screenshot_backup/namecache.tsv"
+
+if os.path.isfile(CONFIG_FILE):
+    with open(CONFIG_FILE, "rb") as f:
+        conf = tomllib.load(f)
+        CONFIG_STEAM_USERID = conf["Options"]["SteamUserID"]
+        CONFIG_DEST = conf["Options"]["Destination"]
+        CONFIG_CACHE = conf["Options"]["Cache"]
+
+        print(f"Loaded config file {CONFIG_FILE}")
+        print(f"Steam User ID: {CONFIG_STEAM_USERID}")
+        print(f"Screenshot Destination: {os.path.expandvars(CONFIG_DEST)}")
+        print(f"Name Cache: {os.path.expandvars(CONFIG_CACHE)}")
+        print()
+else:
+    print(f"No config file at {opts.config}")
+    print("Please add a config file, or specify the config file with --config option")
+    exit()
+
+
+STEAM_USERDATA = os.path.expandvars(f"$HOME/.local/share/Steam/userdata/{CONFIG_STEAM_USERID}")
 
 SCREENSHOT_SRC = os.path.join(STEAM_USERDATA, "760/remote")
-SCREENSHOT_DST = os.path.expandvars("$DEST")
+SCREENSHOT_DST = os.path.expandvars(CONFIG_DEST)
 
 APPMANIFEST = os.path.expandvars("$HOME/.local/share/Steam/steamapps")
 SHORTCUTS = os.path.join(STEAM_USERDATA, "config/shortcuts.vdf")
 
-CACHE = os.path.expandvars("$CACHE")
+CACHE = os.path.expandvars(CONFIG_CACHE)
 
 cache_data = {}
 shortcuts_data = {}
