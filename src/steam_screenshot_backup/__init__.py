@@ -82,10 +82,11 @@ def get_name(appid):
     # see https://github.com/ValveSoftware/steam-for-linux/issues/9335
     # see https://github.com/safijari/Shotty/blob/333e22764fa0a6324796b5be5cee8f7412461dfd/main.py#L124
     for s_appid, s_name in shortcuts_data.items():
-        bin_appid = bin(int(appid))
-        bin_s_appid = bin(int(s_appid) >> 32)
+        bin_appid = int(appid)
+        # shift right 32, keep only lower 24 bits
+        bin_s_appid = int(s_appid) >> 32 & ((1 << 24) - 1)
 
-        if bin_s_appid.endswith(bin_appid[2:]):
+        if bin_appid == bin_s_appid:
             cache_data[appid] = s_name
             print(f"{appid} → {s_name} (trunc. shortcuts)")
             return s_name
