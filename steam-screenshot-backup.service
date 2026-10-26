@@ -1,0 +1,14 @@
+[Unit]
+Description=Screenshot Backup
+StartLimitIntervalSec=200
+StartLimitBurst=5
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/steam-screenshot-backup
+Restart=on-failure
+RestartSec=10
+
+Environment="STEAM_USERID=<YOUR STEAM USER ID>"
+Environment="DEST=%h/Pictures/Steam"
+Environment="CACHE=%h/.local/share/steam_screenshot_backup_name_cache.json"

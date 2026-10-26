@@ -1,0 +1,19 @@
+[project]
+name = "steam-screenshot-backup"
+version = "0.1.0"
+description = "Backs up steam screenshots and preserves game names"
+readme = "README.md"
+authors = [
+    { name = "Arnaught", email = "rayquaza01@outlook.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "vdf>=3.4",
+]
+
+[project.scripts]
+steam-screenshot-backup = "steam_screenshot_backup:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"

@@ -1,0 +1,17 @@
+[Unit]
+Description=Steam Screenshot Backup
+
+[Timer]
+# every hour
+# OnCalendar=hourly
+
+# every half hour
+# OnCalendar=*-*-* *:30:00
+
+# every 15 minutes
+OnCalendar=*-*-* *:00,15,30,45:00
+
+Persistent=true
+
+[Install]
+WantedBy=timers.target
