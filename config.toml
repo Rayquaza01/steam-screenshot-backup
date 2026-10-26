@@ -1,0 +1,4 @@
+[Options]
+SteamUserID="<YOUR STEAM USER ID>"
+Cache="$HOME/.config/steam_screenshot_backup/namecache.tsv"
+Destination="$HOME/Pictures/Steam"
