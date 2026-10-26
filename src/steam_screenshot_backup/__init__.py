@@ -134,6 +134,9 @@ def main():
     if not os.path.isdir(SCREENSHOT_DST):
         os.mkdir(SCREENSHOT_DST)
 
+    count = 0
+    skipped = 0
+
     for folder in os.scandir(SCREENSHOT_SRC):
         if os.path.isdir(folder):
             bn = os.path.basename(folder)
@@ -149,8 +152,15 @@ def main():
 
                     screenshot_dest = os.path.join(folder_dest, screenshot_fn)
                     if not os.path.isfile(screenshot_dest):
+                        count += 1
                         print(f"Copied {screenshot_dest}")
                         shutil.copy2(screenshot, screenshot_dest)
+                    else:
+                        count += 1
+                        skipped += 1
+
+    print()
+    print(f"Copied {count} screenshots ({skipped} skipped)")
 
     write_cache()
 
