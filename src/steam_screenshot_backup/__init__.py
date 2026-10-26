@@ -16,7 +16,7 @@ SCREENSHOT_DST = os.path.expandvars("$DEST")
 APPMANIFEST = os.path.expandvars("$HOME/.local/share/Steam/steamapps")
 SHORTCUTS = os.path.join(STEAM_USERDATA, "config/shortcuts.vdf")
 
-CACHE = os.path.expandvars("$NAME_CACHE")
+CACHE = os.path.expandvars("$CACHE")
 
 cache_data = {}
 shortcuts_data = {}
