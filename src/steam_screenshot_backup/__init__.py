@@ -77,6 +77,19 @@ def get_name(appid):
         print(f"{appid} → {shortcuts_data[appid]} (shortcuts)")
         return shortcuts_data[appid]
 
+    # step 3.1: try truncated shortcuts (for non steam games)
+    # steam game mode uses the wrong id for screenshots of non-steam games, so we need to work around that
+    # see https://github.com/ValveSoftware/steam-for-linux/issues/9335
+    # see https://github.com/safijari/Shotty/blob/333e22764fa0a6324796b5be5cee8f7412461dfd/main.py#L124
+    for s_appid, s_name in shortcuts_data.items():
+        bin_appid = bin(int(appid))
+        bin_s_appid = bin(int(s_appid) >> 32)
+
+        if bin_s_appid.endswith(bin_appid[2:]):
+            cache_data[appid] = s_name
+            print(f"{appid} → {s_name} (trunc. shortcuts)")
+            return s_name
+
     # step 4: check online
     res = urllib.request.urlopen(f"https://store.steampowered.com/api/appdetails?appids={appid}")
     body = json.load(res)
