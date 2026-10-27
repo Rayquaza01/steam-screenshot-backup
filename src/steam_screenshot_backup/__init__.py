@@ -50,6 +50,7 @@ CACHE = os.path.expandvars(CONFIG_CACHE)
 
 cache_data = {}
 shortcuts_data = {}
+shortcuts_trunc_data = {}
 
 
 def get_name(appid):
@@ -81,15 +82,10 @@ def get_name(appid):
     # steam game mode uses the wrong id for screenshots of non-steam games, so we need to work around that
     # see https://github.com/ValveSoftware/steam-for-linux/issues/9335
     # see https://github.com/safijari/Shotty/blob/333e22764fa0a6324796b5be5cee8f7412461dfd/main.py#L124
-    for s_appid, s_name in shortcuts_data.items():
-        bin_appid = int(appid)
-        # shift right 32, keep only lower 24 bits
-        bin_s_appid = int(s_appid) >> 32 & ((1 << 24) - 1)
-
-        if bin_appid == bin_s_appid:
-            cache_data[appid] = s_name
-            print(f"{appid} → {s_name} (trunc. shortcuts)")
-            return s_name
+    if appid in shortcuts_trunc_data:
+        cache_data[appid] = shortcuts_trunc_data[appid]
+        print(f"{appid} → {shortcuts_trunc_data[appid]} (trunc. shortcuts)")
+        return shortcuts_trunc_data[appid]
 
     # step 4: check online
     res = urllib.request.urlopen(f"https://store.steampowered.com/api/appdetails?appids={appid}")
@@ -138,7 +134,11 @@ def read_shortcuts():
         long_appid = int(reversed_hex, 16) << 32 | 0x02000000
         # print(f"{long_appid} {name}")
 
+        trunc_appid = long_appid >> 32 & ((1 << 24) - 1)
+
         shortcuts_data[str(long_appid)] = name
+        shortcuts_trunc_data[str(trunc_appid)] = name
+
 
 
 def main():
